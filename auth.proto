@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package auth;
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+message LoginResponse { string session_id = 1; }
+
+message ValidateSessionRequest { string session_id = 1; }
+message ValidateSessionResponse {
+  bool is_valid = 1;
+  int64 user_id = 2;
+}
+
+message LogoutRequest { string session_id = 1; }
+message LogoutResponse { bool is_success = 1; }
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+message RegisterResponse { int64 user_id = 1; }
+
+message UserProfileRequest { string session_id = 1; }
+message UserProfileResponse {
+  int64 user_id = 1;
+  string email = 2;
+}
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc ValidateSession(ValidateSessionRequest) returns (ValidateSessionResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc UserProfile(UserProfileRequest) returns (UserProfileResponse);
+}
